@@ -64,7 +64,8 @@ for feature in features:
 
 predictions = classifier.predict(input_fn=lambda: input_fn(predict))
 for pred_dict in predictions:
-    class_id = pred_dict['class_ids'][0]
+    #print pred_dict prints dictionary, inside is probabilities (3-one for each speicies ) and class_id ...
+    class_id = pred_dict['class_ids'][0] # class id returns the highest probability
     probability =pred_dict['probabilities'][class_id]
 
     print('prediction is "{}" ({:.1f}%)'.format(SPECIES[class_id],100*probability))
