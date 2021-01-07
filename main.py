@@ -45,3 +45,26 @@ eval_results = classifier.evaluate(input_fn=lambda : input_fn(test, test_y, trai
 
 print('\n test set accuracy: {accuracy:0.3f}\n'.format(**eval_results))
 
+def input_fn (features, batch_size=256):
+    #converts input to a data set model without labels
+    return tf.data.Dataset.from_tensor_slices(dict(features)).batch(batch_size)
+
+features = ['SepalLength', 'SepalWidth', 'PetalLength', 'PetalWidth']
+predict={}
+
+print("please type numerical values ")
+
+for feature in features:
+    valid = True
+    while valid:
+        val = input(feature+":")
+        if not val.isdigit():
+            valid = False
+    predict[feature] = [float(val)]
+
+predictions = classifier.predict(input_fn=lambda: input_fn(predict))
+for pred_dict in predictions:
+    class_id = pred_dict['class_ids'][0]
+    probability =pred_dict['probabilities'][class_id]
+
+    print('prediction is "{}" ({:.1f}%)'.format(SPECIES[class_id],100*probability))
